@@ -1,80 +1,92 @@
-const githubInput = document.getElementById("github-link");
-const saveLinkBtn = document.getElementById("save-link");
-const addTaskBtn = document.getElementById("add-task");
-const timeline = document.getElementById("timeline");
+function adicionarTarefa() {
+  const descricao = prompt("Descrição da tarefa:");
+  if (!descricao) return;
 
-let tasks = JSON.parse(localStorage.getItem("roadmap-tasks")) || [];
+  const status = prompt(
+    "Status atual da tarefa (ex: Em andamento, Concluído, Pendente):"
+  );
+  if (!status) return;
 
-githubInput.value = "";
+  const prazo = prompt("Prazo estimado de entrega (ex: 20/04/2025):");
+  if (!prazo) return;
 
-// Adiciona nova etapa
-addTaskBtn.addEventListener("click", () => {
-  const description = prompt("Descrição da tarefa:");
-  if (!description) return;
+  const responsavel = prompt("Responsável pela tarefa:");
+  if (!responsavel) return;
 
-  const status =
-    prompt("Status (Pendente, Em andamento, Concluído):") || "Pendente";
-  const deadline = prompt("Prazo estimado:") || "Sem prazo";
-  const owner = prompt("Responsável:") || "Não definido";
-  const repoLink = prompt("Link do repositório para esta etapa:");
+  const repositorio = prompt("Link do repositório no GitHub:");
+  if (!repositorio) return;
 
-  if (!repoLink)
-    return alert("Por favor, insira o link do repositório para esta etapa.");
-
-  const task = {
-    id: Date.now(),
-    description,
+  const novaTarefa = {
+    descricao,
     status,
-    deadline,
-    owner,
-    repoLink,
+    prazo,
+    responsavel,
+    repositorio,
   };
 
-  tasks.push(task);
-  saveTasks();
-  addTaskToDOM(task);
-});
+  const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+  tarefas.push(novaTarefa);
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
 
-function saveTasks() {
-  localStorage.setItem("roadmap-tasks", JSON.stringify(tasks));
+  exibirTarefas();
 }
 
-function addTaskToDOM(task) {
-  const card = document.createElement("div");
-  card.className = "task-card";
+function exibirTarefas() {
+  const timeline = document.getElementById("timeline");
+  timeline.innerHTML = "";
 
-  card.innerHTML = `
-    <h2>${task.description}</h2>
-    <p><strong>Status:</strong> <span class="status">${task.status}</span></p>
-    <p><strong>Prazo:</strong> <span class="deadline">${task.deadline}</span></p>
-    <p><strong>Responsável:</strong> <span class="owner">${task.owner}</span></p>
-    <p><strong>Repositório:</strong> <a href="${task.repoLink}" target="_blank" class="repo-link">${task.repoLink}</a></p>
-    <button class="edit-task">Editar</button>
-  `;
+  const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
-  card.querySelector(".edit-task").addEventListener("click", () => {
-    const status = prompt("Novo status:", task.status) || task.status;
-    const deadline = prompt("Novo prazo:", task.deadline) || task.deadline;
-    const owner = prompt("Novo responsável:", task.owner) || task.owner;
-    const repoLink =
-      prompt("Novo repositório:", task.repoLink) || task.repoLink;
+  tarefas.forEach((tarefa, index) => {
+    const card = document.createElement("div");
+    card.className = "task-card";
 
-    task.status = status;
-    task.deadline = deadline;
-    task.owner = owner;
-    task.repoLink = repoLink;
+    card.innerHTML = `
+      <h2>${tarefa.descricao}</h2>
+      <p class="status">Status: ${tarefa.status}</p>
+      <p class="deadline">Prazo: ${tarefa.prazo}</p>
+      <p class="owner">Responsável: ${tarefa.responsavel}</p>
+      <p><a href="${tarefa.repositorio}" class="repo-link" target="_blank">Ver repositório</a></p>
+      <button class="edit-task" onclick="editarTarefa(${index})">Editar</button>
+    `;
 
-    card.querySelector(".status").textContent = status;
-    card.querySelector(".deadline").textContent = deadline;
-    card.querySelector(".owner").textContent = owner;
-    card.querySelector(".repo-link").href = repoLink;
-    card.querySelector(".repo-link").textContent = repoLink;
-
-    saveTasks();
+    timeline.appendChild(card);
   });
-
-  timeline.appendChild(card);
 }
 
-// Inicialização
-tasks.forEach((task) => addTaskToDOM(task));
+function editarTarefa(index) {
+  const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+  const tarefa = tarefas[index];
+
+  const novaDescricao = prompt("Editar descrição:", tarefa.descricao);
+  if (!novaDescricao) return;
+
+  const novoStatus = prompt("Editar status:", tarefa.status);
+  if (!novoStatus) return;
+
+  const novoPrazo = prompt("Editar prazo:", tarefa.prazo);
+  if (!novoPrazo) return;
+
+  const novoResponsavel = prompt("Editar responsável:", tarefa.responsavel);
+  if (!novoResponsavel) return;
+
+  const novoRepositorio = prompt(
+    "Editar link do repositório:",
+    tarefa.repositorio
+  );
+  if (!novoRepositorio) return;
+
+  tarefas[index] = {
+    descricao: novaDescricao,
+    status: novoStatus,
+    prazo: novoPrazo,
+    responsavel: novoResponsavel,
+    repositorio: novoRepositorio,
+  };
+
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
+  exibirTarefas();
+}
+
+// Ao carregar a página
+window.onload = exibirTarefas;
