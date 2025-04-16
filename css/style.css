@@ -1,76 +1,204 @@
+/* Resetando alguns estilos padrões */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f7f7f7;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
   padding: 20px;
+  flex-direction: column;
 }
 
-header {
-  text-align: center;
-  margin-bottom: 30px;
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.repo-input {
-  margin-top: 10px;
-}
-
-input[type="url"] {
-  padding: 10px;
-  width: 300px;
-  border-radius: 8px;
+/* Estilo para o formulário de link */
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 16px;
   border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+  outline: none;
 }
 
+input[type="text"]:focus {
+  border-color: #2196f3;
+}
+
+/* Botões */
 button {
-  padding: 10px 15px;
-  margin-left: 10px;
-  background-color: #1e88e5;
+  background-color: #2196f3;
   color: white;
   border: none;
+  padding: 12px 20px;
+  font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 button:hover {
-  background-color: #1565c0;
+  background-color: #1976d2;
 }
 
-#add-task {
-  display: block;
-  margin: 0 auto 20px;
-}
-
+/* Linha do tempo */
 #timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 700px;
-  margin: auto;
+  margin-top: 30px;
+  width: 100%;
 }
 
 .task-card {
-  background: white;
-  padding: 15px 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
 }
 
 .task-card h2 {
+  font-size: 20px;
   margin-bottom: 10px;
-  font-size: 1.2rem;
 }
 
 .task-card p {
-  margin: 4px 0;
-  font-size: 0.95rem;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
 }
 
-.edit-task {
+.task-card .status {
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.task-card .deadline,
+.task-card .owner {
+  font-style: italic;
+  color: #888;
+}
+
+.task-card .repo-link {
+  color: #2196f3;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.task-card .repo-link:hover {
+  text-decoration: underline;
+}
+
+.task-card .edit-task {
+  background-color: #fbc02d;
+  color: black;
+  padding: 8px 15px;
+  border-radius: 5px;
   margin-top: 10px;
-  background-color: #ffa726;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.task-card .edit-task:hover {
+  background-color: #f57c00;
+}
+
+/* Visão Geral do Projeto */
+#project-info {
+  background-color: #e3f2fd;
+  border-left: 5px solid #2196f3;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+#project-info h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+#project-info p {
+  font-size: 14px;
+  color: #555;
+}
+
+#project-info a {
+  color: #2196f3;
+  text-decoration: none;
+}
+
+#project-info a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo de input do projeto */
+input[type="text"]:disabled {
+  background-color: #f1f1f1;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .task-card {
+    padding: 15px;
+  }
+
+  input[type="text"] {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .task-card {
+    padding: 10px;
+  }
+
+  .task-card h2 {
+    font-size: 18px;
+  }
+
+  .task-card p {
+    font-size: 12px;
+  }
 }
